@@ -1,0 +1,19 @@
+  /* Varieveis globais */
+  $color-background: #f8f8f8;
+  $color-text: #29292e;
+
+
+*{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: $color-background;
+  color: $color-text;
+}
+
+body, input, button, textarea {
+  font: 400 16px 'Roboto', sans-serif;
+} 
