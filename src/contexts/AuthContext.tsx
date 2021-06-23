@@ -1,13 +1,28 @@
-import { BrowserRouter, Route } from "react-router-dom";
-import { createContext, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { createContext } from "react";
+import { useState } from "react";
+import { ReactNode } from "react";
+import { auth, firebase } from "../services/firebase";
 
-import { Home } from "./pages/Home";
-import { NewRoom } from "./pages/NewRoom";
-import { AuthContextProvider } from "./contexts/AuthContext";
+type AuthContextType = {
+  user: User | undefined;
+  singInWithGoogle: () => Promise<void>;
+};
 
-import "./styles/global.scss";
+type User = {
+  id: string;
+  name: string;
+  avatar: string;
+};
 
-function App() {
+type AuthContextProviderProps = {
+  children: ReactNode;
+};
+
+//cria um contexto (informação) que podera ser usado em diversos componentes o parametro passado e o tipo da informação a aser guardada
+export const AuthContext = createContext({} as AuthContextType);
+
+export function AuthContextProvider(props: AuthContextProviderProps) {
   //criando state para o context
   const [user, setUser] = useState<User>();
 
@@ -64,13 +79,8 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <AuthContextProvider>
-        <Route path="/" exact component={Home} />
-        <Route path="/salas/nova" component={NewRoom} />
-      </AuthContextProvider>
-    </BrowserRouter>
+    <AuthContext.Provider value={{ user, singInWithGoogle }}>
+      {props.children}
+    </AuthContext.Provider>
   );
 }
-
-export default App;

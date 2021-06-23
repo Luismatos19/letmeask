@@ -7,7 +7,7 @@ import logoImg from "../assets/logo.svg";
 import { Button } from "../components/Button";
 
 import "../styles/auth.scss";
-import { AuthContext } from "../App";
+import { AuthContext } from "../contexts/AuthContext";
 
 export function NewRoom() {
   const { user } = useContext(AuthContext);
