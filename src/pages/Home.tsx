@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import illustrationImg from "../assets/illustration.svg";
@@ -7,12 +6,17 @@ import googleIconImg from "../assets/google-icon.svg";
 
 import "../styles/auth.scss";
 import { Button } from "../components/Button";
-import { AuthContext } from "../App";
+
+import { useAuth } from "../hooks/useAuth";
+import { FormEvent, useState } from "react";
+import { database } from "../services/firebase";
 
 export function Home() {
   const history = useHistory();
   //usando o context
-  const { user, singInWithGoogle } = useContext(AuthContext);
+  const { user, singInWithGoogle } = useAuth();
+
+  const [roomCode, setRoomCode] = useState("");
 
   async function handleCreateRoom() {
     //se o usuario nao estiver logado chama o metodo
@@ -21,6 +25,25 @@ export function Home() {
     }
     //navegando entre rotas
     history.push("salas/nova");
+  }
+
+  //entrar em uma sal existente
+  async function handleJoinRoom(event: FormEvent) {
+    event.preventDefault();
+
+    if (roomCode.trim() === "") {
+      return;
+    }
+
+    //verificando se a sala existe (get para buscar todas as informações da sala)
+    const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+    if (!roomRef.exists()) {
+      alert("Sala não existe");
+      return;
+    }
+
+    history.push(`salas/${roomCode}`);
   }
 
   return (
@@ -39,8 +62,13 @@ export function Home() {
             Cire sua sala com Google
           </button>
           <div className="separator">ou entre em uma sala</div>
-          <form action="">
-            <input type="text" placeholder="Digite o código da sala" />
+          <form onSubmit={handleJoinRoom}>
+            <input
+              type="text"
+              placeholder="Digite o código da sala"
+              onChange={(event) => setRoomCode(event.target.value)}
+              value={roomCode}
+            />
             <Button type="submit">Entrar na sala</Button>
           </form>
         </div>
