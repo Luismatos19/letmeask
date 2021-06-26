@@ -6,5 +6,6 @@ import "../styles/button.scss";
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function Button(props: ButtonProps) {
+  //passando propriedades do button (onclick etc...)
   return <button className="button" {...props} />;
 }
