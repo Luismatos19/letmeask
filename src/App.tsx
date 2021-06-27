@@ -6,6 +6,7 @@ import { AuthContextProvider } from "./contexts/AuthContext";
 
 import "./styles/global.scss";
 import { Room } from "./pages/Room";
+import { AdminRoom } from "./pages/AdminRoom";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/salas/nova" exact component={NewRoom} />
           <Route path="/salas/:id" component={Room} />
+          <Route path="/admin/salas/:id" component={AdminRoom} />
         </Switch>
       </AuthContextProvider>
     </BrowserRouter>
